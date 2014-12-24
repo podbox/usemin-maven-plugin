@@ -6,13 +6,13 @@ import com.google.javascript.jscomp.ErrorManager;
 import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.SourceFile;
 import com.podbox.compiler.ClosureCompiler;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,29 +23,38 @@ import static com.google.javascript.jscomp.SourceFile.fromCode;
 import static com.google.javascript.jscomp.SourceFile.fromFile;
 import static java.util.UUID.randomUUID;
 import static java.util.regex.Pattern.DOTALL;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class JsBuilder extends AbstractBuilder implements ErrorManager {
 
     static final Pattern SEARCH_PATTERN = Pattern.compile("<!--[\\s]*build:js[\\s]*(.*?)(?=[\\s]*-->)[\\s]*-->(.*?)(?=<!--[\\s]*endbuild[\\s]*-->)<!--[\\s]*endbuild[\\s]*-->", DOTALL);
 
-    public JsBuilder(final Log log, final String sourceEncoding) {
-        super(SEARCH_PATTERN, log, sourceEncoding);
+    public JsBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
-    protected Optional<String> compile(final Document resources, final File sourceDirectory, final File targetDirectory) {
+    protected Optional<String> compile(final String path, final Document resources) throws IOException {
         final List<SourceFile> sources = new ArrayList<>();
 
         final Iterator<Element> scripts = resources.select("script").iterator();
         while (scripts.hasNext()) {
             final Element script = scripts.next();
-            final String sourceFileName = substringBeforeLast(script.attr("src"), "?");
+
+            String sourceFileName = substringBeforeLast(script.attr("src"), "?");
+            final boolean jspContextPath = startsWith(sourceFileName, JSP_CONTEXT_PATH);
+            if (jspContextPath) {
+                sourceFileName = substringAfter(sourceFileName, JSP_CONTEXT_PATH);
+            }
 
             if (isNotBlank(sourceFileName)) {
                 log.info("     " + (scripts.hasNext() ? '├' : '└') + "─ " + sourceFileName);
-                sources.add(fromFile(new File(sourceDirectory, sourceFileName), sourceCharset));
+
+                final File sourceFile = jspContextPath ?
+                        new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
+                        new File(new File(sourceDirectory.getCanonicalFile(), path).getCanonicalFile(), sourceFileName);
+
+                sources.add(fromFile(sourceFile, sourceCharset));
             }
             else {
                 String code = "";

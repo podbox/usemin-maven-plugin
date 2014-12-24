@@ -46,9 +46,9 @@ public class UseMinMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         if (sources == null || sources.isEmpty()) return;
 
-        final CssBuilder cssBuilder = new CssBuilder(getLog(), sourceEncoding);
-        final JsBuilder jsBuilder = new JsBuilder(getLog(), sourceEncoding);
-        final CdnBuilder cdnBuilder = new CdnBuilder(getLog(), sourceEncoding);
+        final CssBuilder cssBuilder = new CssBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
+        final JsBuilder jsBuilder = new JsBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
+        final CdnBuilder cdnBuilder = new CdnBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
 
         for (final String source : sources) {
             getLog().info("Processing " + source);
@@ -59,7 +59,6 @@ public class UseMinMojo extends AbstractMojo {
 
             final File parentSourceDirectory = sourceFile.getParentFile();
             final String path = substringAfter(parentSourceDirectory.getAbsolutePath(), sourceDirectory.getAbsolutePath());
-            final File parentTargetDirectory = new File(targetDirectory, path);
 
             try {
                 String html;
@@ -71,10 +70,10 @@ public class UseMinMojo extends AbstractMojo {
                     html = Files.toString(sourceFile, forName(sourceEncoding));
                 }
 
-                html = cssBuilder.usemin(parentSourceDirectory, parentTargetDirectory, html);
-                html = jsBuilder.usemin(parentSourceDirectory, parentTargetDirectory, html);
+                html = cssBuilder.usemin(path, html);
+                html = jsBuilder.usemin(path, html);
                 if (isHtml) {
-                    html = cdnBuilder.usemin(parentSourceDirectory, parentTargetDirectory, html);
+                    html = cdnBuilder.usemin(path, html);
                 }
 
                 createParentDirs(targetFile);
