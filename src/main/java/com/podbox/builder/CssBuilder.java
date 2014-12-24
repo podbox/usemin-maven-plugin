@@ -17,8 +17,7 @@ import java.util.regex.Pattern;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.regex.Pattern.DOTALL;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class CssBuilder extends AbstractBuilder {
 
@@ -26,22 +25,30 @@ public class CssBuilder extends AbstractBuilder {
 
     static final String TEXT_LESS = "text/x-less";
 
-    public CssBuilder(final Log log, final String sourceEncoding) {
-        super(SEARCH_PATTERN, log, sourceEncoding);
+    public CssBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
-    protected Optional<String> compile(final Document resources, final File sourceDirectory, final File targetDirectory) throws IOException {
+    protected Optional<String> compile(final String path, final Document resources) throws IOException {
         final List<String> sources = new ArrayList<>();
 
         final Iterator<Element> stylesheets = resources.select("link[rel=stylesheet]").iterator();
         while (stylesheets.hasNext()) {
             final Element stylesheet = stylesheets.next();
-            final String sourceFileName = substringBeforeLast(stylesheet.attr("href"), "?");
+
+            String sourceFileName = substringBeforeLast(stylesheet.attr("href"), "?");
+            final boolean jspContextPath = startsWith(sourceFileName, JSP_CONTEXT_PATH);
+            if (jspContextPath) {
+                sourceFileName = substringAfter(sourceFileName, JSP_CONTEXT_PATH);
+            }
 
             if (isNotBlank(sourceFileName)) {
-                final File sourceFile = new File(sourceDirectory, sourceFileName);
                 log.info("     " + (stylesheets.hasNext() ? '├' : '└') + "─ " + sourceFileName);
+
+                final File sourceFile = jspContextPath ?
+                        new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
+                        new File(new File(sourceDirectory, path).getCanonicalFile(), sourceFileName);
 
                 if (TEXT_LESS.equals(stylesheet.attr("type"))) {
                     sources.add(LessCssCompiler.compile(log, newArrayList(sourceFile)).get());

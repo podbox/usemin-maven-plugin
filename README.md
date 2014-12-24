@@ -26,6 +26,18 @@
 <!-- endbuild -->
 ```
 
+# JSP context path support
+```html
+<!-- build:css ${pageContext.request.contextPath}/styles/app.css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/custom.css">
+<!-- endbuild -->
+
+<!-- build:js ${pageContext.request.contextPath}/scripts/podbox.js -->
+<script src="${pageContext.request.contextPath}/scripts/app.js"></script>
+<!-- endbuild -->
+```
+
 # CDN replace _(html files only)_
 ```html
 <link rel="stylesheet" href="libs/jquery-ui-1.11.2.css"
@@ -41,7 +53,6 @@
     <plugins>
         <plugin>
             <artifactId>maven-war-plugin</artifactId>
-            <version>2.5</version>
             <configuration>
                 <warSourceExcludes>
                     libs/*,
@@ -53,7 +64,6 @@
         <plugin>
             <groupId>com.podbox</groupId>
             <artifactId>usemin-maven-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
             <executions>
                 <execution>
                     <phase>prepare-package</phase>

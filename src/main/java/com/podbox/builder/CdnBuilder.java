@@ -12,12 +12,12 @@ import static org.jsoup.Jsoup.parse;
 
 public class CdnBuilder extends AbstractBuilder {
 
-    public CdnBuilder(final Log log, final String sourceEncoding) {
-        super(null, log, sourceEncoding);
+    public CdnBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(null, log, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
-    public String usemin(final File sourceDirectory, final File targetDirectory, final String html) throws IOException {
+    public String usemin(final String path, final String html) throws IOException {
         final Document document = parse(html, sourceEncoding);
 
         for (final Element element : document.select("link[data-cdn]")) {
@@ -40,7 +40,7 @@ public class CdnBuilder extends AbstractBuilder {
     }
 
     @Override
-    protected Optional<String> compile(final Document resources, final File sourceDirectory, final File targetDirectory) throws IOException {
+    protected Optional<String> compile(final String path, final Document resources) throws IOException {
         throw new UnsupportedOperationException();
     }
 
