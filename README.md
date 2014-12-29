@@ -53,13 +53,21 @@
     <plugins>
         <plugin>
             <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-                <warSourceExcludes>
-                    libs/*,
-                    index.html,
-                    mapping.html
-                </warSourceExcludes>
-            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>war</goal>
+                    </goals>
+                    <configuration>
+                        <warSourceExcludes>
+                            libs/*,
+                            index.html,
+                            mapping.html
+                        </warSourceExcludes>
+                    </configuration>
+                </execution>
+            </executions>
         </plugin>
         <plugin>
             <groupId>com.podbox</groupId>
