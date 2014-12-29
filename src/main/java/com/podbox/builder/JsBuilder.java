@@ -1,10 +1,8 @@
 package com.podbox.builder;
 
 import com.google.common.base.Optional;
-import com.google.javascript.jscomp.CheckLevel;
-import com.google.javascript.jscomp.ErrorManager;
-import com.google.javascript.jscomp.JSError;
-import com.google.javascript.jscomp.SourceFile;
+import com.google.javascript.jscomp.*;
+import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.podbox.compiler.ClosureCompiler;
 import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.DataNode;
@@ -18,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
 import static com.google.javascript.jscomp.SourceFile.fromCode;
 import static com.google.javascript.jscomp.SourceFile.fromFile;
 import static java.util.UUID.randomUUID;
@@ -29,8 +26,14 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
 
     static final Pattern SEARCH_PATTERN = Pattern.compile("<!--[\\s]*build:js[\\s]*(.*?)(?=[\\s]*-->)[\\s]*-->(.*?)(?=<!--[\\s]*endbuild[\\s]*-->)<!--[\\s]*endbuild[\\s]*-->", DOTALL);
 
-    public JsBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+    final LanguageMode languageMode;
+
+    final CompilationLevel compilationLevel;
+
+    public JsBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final LanguageMode languageMode, final CompilationLevel compilationLevel) {
         super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
+        this.languageMode = languageMode;
+        this.compilationLevel = compilationLevel;
     }
 
     @Override
@@ -67,7 +70,7 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
             }
         }
 
-        return ClosureCompiler.compile(this, sources, SIMPLE_OPTIMIZATIONS);
+        return ClosureCompiler.compile(this, sources, languageMode, compilationLevel);
     }
 
     @Override

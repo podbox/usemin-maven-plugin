@@ -70,7 +70,7 @@ public abstract class AbstractBuilder {
                         hash,
                         substringAfterLast(outputResourceName, ".")
                 );
-                
+
                 final File outputFile = jspContextPath ?
                         new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH)) :
                         new File(new File(targetDirectory.getCanonicalFile(), path).getCanonicalFile(), outputResource);

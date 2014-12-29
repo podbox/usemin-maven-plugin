@@ -3,6 +3,7 @@ package com.podbox.compiler;
 import com.google.common.base.Optional;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.Compiler;
+import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -15,7 +16,6 @@ import java.util.zip.ZipInputStream;
 
 import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.javascript.jscomp.CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT;
 import static com.google.javascript.jscomp.SourceFile.fromCode;
 import static java.lang.Thread.currentThread;
 import static java.util.Arrays.asList;
@@ -59,10 +59,10 @@ public class ClosureCompiler {
         }
     }
 
-    public static <T extends SourceFile> Optional<String> compile(final ErrorManager errorManager, final Collection<T> inputs, final CompilationLevel level) {
+    public static <T extends SourceFile> Optional<String> compile(final ErrorManager errorManager, final Collection<T> inputs, final LanguageMode languageMode, final CompilationLevel level) {
         final CompilerOptions options = new CompilerOptions();
         level.setOptionsForCompilationLevel(options);
-        options.setLanguageIn(ECMASCRIPT5_STRICT);
+        options.setLanguage(languageMode);
 
         final Compiler compiler = new Compiler(errorManager);
         final Result result = compiler.compile(EXTERNS, newArrayList(inputs), options);

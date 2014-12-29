@@ -1,3 +1,12 @@
+# Usemin Maven Plugin
+The Usemin Maven plugin is a tool inspired by [grunt-usemin](https://github.com/yeoman/grunt-usemin),
+which replaces references from non-optimized scripts and stylesheets to their optimized version within a set of HTML and JSP files using :
+
+* [Official LESS CSS Compiler for Java](https://github.com/marceloverdijk/lesscss-java)
+* [YUI CSS Compressor](https://github.com/yui/yuicompressor)
+* [Google Closure Compiler](https://github.com/google/closure-compiler)
+
+
 # CSS compression _(with LESS support)_
 ```html
 <!-- build:css styles/app.css -->
@@ -61,7 +70,6 @@
                     </goals>
                     <configuration>
                         <warSourceExcludes>
-                            libs/*,
                             index.html,
                             mapping.html
                         </warSourceExcludes>
@@ -79,6 +87,14 @@
                         <goal>usemin</goal>
                     </goals>
                     <configuration>
+                        <!-- http://javadoc.closure-compiler.googlecode.com/git/com/google/javascript/jscomp/CompilerOptions.LanguageMode.html -->
+                        <!-- default: ECMASCRIPT5_STRICT -->
+                        <languageMode>ECMASCRIPT5_STRICT</languageMode>
+                        
+                        <!-- http://javadoc.closure-compiler.googlecode.com/git/com/google/javascript/jscomp/CompilationLevel.html -->
+                        <!-- default: SIMPLE_OPTIMIZATIONS -->
+                        <compilationLevel>ADVANCED_OPTIMIZATIONS</compilationLevel>
+                        
                         <sources>
                             <source>index.html</source>
                             <source>mapping.html</source>

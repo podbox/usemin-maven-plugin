@@ -1,6 +1,8 @@
 package com.podbox.mojo;
 
 import com.google.common.io.Files;
+import com.google.javascript.jscomp.CompilationLevel;
+import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.podbox.builder.CdnBuilder;
 import com.podbox.builder.CssBuilder;
 import com.podbox.builder.JsBuilder;
@@ -39,6 +41,12 @@ public class UseMinMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File targetDirectory;
 
+    @Parameter(defaultValue = "ECMASCRIPT5_STRICT")
+    private LanguageMode languageMode;
+
+    @Parameter(defaultValue = "SIMPLE_OPTIMIZATIONS")
+    private CompilationLevel compilationLevel;
+
     @Parameter
     private List<String> sources;
 
@@ -47,7 +55,7 @@ public class UseMinMojo extends AbstractMojo {
         if (sources == null || sources.isEmpty()) return;
 
         final CssBuilder cssBuilder = new CssBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
-        final JsBuilder jsBuilder = new JsBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
+        final JsBuilder jsBuilder = new JsBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding, languageMode, compilationLevel);
         final CdnBuilder cdnBuilder = new CdnBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
 
         for (final String source : sources) {
