@@ -7,7 +7,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 * [Google Closure Compiler](https://github.com/google/closure-compiler)
 
 
-# CSS compression _(with LESS support)_
+## CSS compression _(with LESS support)_
 ```html
 <!-- build:css styles/app.css -->
 <link rel="stylesheet" href="styles/main.css">
@@ -17,7 +17,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 <!-- endbuild -->
 ```
 
-# JS compilation
+## JS compilation
 ```html
 <!-- build:js scripts/podbox.js -->
 <script>
@@ -35,7 +35,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 <!-- endbuild -->
 ```
 
-# JSP context path support
+## JSP context path support
 ```html
 <!-- build:css ${pageContext.request.contextPath}/styles/app.css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css">
@@ -47,7 +47,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 <!-- endbuild -->
 ```
 
-# CDN replace _(html files only)_
+## CDN replace _(html files only)_
 ```html
 <link rel="stylesheet" href="libs/jquery-ui-1.11.2.css"
       data-cdn="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css">
@@ -56,7 +56,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
         data-cdn="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 ```
 
-# Maven Config
+## Maven Config
 ```xml
 <repositories>
     <repository>
@@ -115,12 +115,12 @@ which replaces references from non-optimized scripts and stylesheets to their op
 </build>
 ```
 
-# Gradle Task (yeah, it's ugly...)
+## Gradle Task (yeah, it's ugly...)
 ```groovy
 buildscript {
     repositories {
         mavenCentral()
-        maven { url https://repository-podbox.forge.cloudbees.com/public }
+        maven { url 'https://repository-podbox.forge.cloudbees.com/public' }
     }
     dependencies {
         classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
@@ -129,12 +129,12 @@ buildscript {
 
 task usemin(dependsOn: processResources) {
     def usemin = new com.podbox.mojo.UseMinMojo(
-            sourceEncoding:   "UTF-8",
-            sourceDirectory:  "src/main/resources/static",
-            targetDirectory:  "build/resources/main/static",
-            languageMode:     "ECMASCRIPT5_STRICT",
-            compilationLevel: "SIMPLE_OPTIMIZATIONS",
-            sources:          [ "index.html" ]
+            sourceEncoding:   'UTF-8',
+            sourceDirectory:  'src/main/resources/static',
+            targetDirectory:  'build/resources/main/static',
+            languageMode:     'ECMASCRIPT5_STRICT',
+            compilationLevel: 'SIMPLE_OPTIMIZATIONS',
+            sources:          [ 'index.html' ]
     )
     usemin.execute()
 }
