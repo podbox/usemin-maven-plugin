@@ -7,8 +7,20 @@
     <version>0.9.4-SNAPSHOT</version>
 
     <name>Podbox - Usemin Maven Plugin</name>
+    <description>
+        The Usemin Maven plugin is a tool inspired by grunt-usemin,
+        which replaces references from non-optimized scripts and stylesheets to their optimized version within a set of HTML and JSP files
+    </description>
     <url>https://github.com/podbox/usemin-maven-plugin</url>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
     <scm>
         <url>https://github.com/podbox/usemin-maven-plugin</url>
         <connection>scm:git:git://github.com:podbox/usemin-maven-plugin.git</connection>
@@ -26,7 +38,6 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
             <version>3.2.3</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
@@ -131,6 +142,14 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.1</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -143,6 +162,9 @@
             </plugin>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
+                <configuration>
+                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -154,10 +176,18 @@
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <distributionManagement>
         <repository>
-            <id>cloudbees-private-release-repository</id>
-            <url>dav:https://repository-podbox.forge.cloudbees.com/release</url>
+            <id>cloudbees-public-repository</id>
+            <url>dav:https://repository-podbox.forge.cloudbees.com/public</url>
         </repository>
         <snapshotRepository>
             <id>cloudbees-private-snapshot-repository</id>

@@ -58,12 +58,20 @@ which replaces references from non-optimized scripts and stylesheets to their op
 
 # Maven Config
 ```xml
+<repositories>
+    <repository>
+        <id>podbox-repository</id>
+        <url>https://repository-podbox.forge.cloudbees.com/public</url>
+    </repository>
+</repositories>
+
 <build>
     <plugins>
         <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <executions>
                 <execution>
+                    <id>default-war</id>
                     <phase>package</phase>
                     <goals>
                         <goal>war</goal>
@@ -105,4 +113,29 @@ which replaces references from non-optimized scripts and stylesheets to their op
         </plugin>
     </plugins>
 </build>
+```
+
+# Gradle Task (yeah, it's ugly...)
+```groovy
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url https://repository-podbox.forge.cloudbees.com/public }
+    }
+    dependencies {
+        classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
+    }
+}
+
+task usemin(dependsOn: processResources) {
+    def usemin = new com.podbox.mojo.UseMinMojo(
+            sourceEncoding:   "UTF-8",
+            sourceDirectory:  "src/main/resources/static",
+            targetDirectory:  "build/resources/main/static",
+            languageMode:     "ECMASCRIPT5_STRICT",
+            compilationLevel: "SIMPLE_OPTIMIZATIONS",
+            sources:          [ "index.html" ]
+    )
+    usemin.execute()
+}
 ```

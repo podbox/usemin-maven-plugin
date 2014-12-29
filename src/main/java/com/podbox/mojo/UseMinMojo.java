@@ -1,5 +1,6 @@
 package com.podbox.mojo;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
@@ -49,6 +50,34 @@ public class UseMinMojo extends AbstractMojo {
 
     @Parameter
     private List<String> sources;
+
+    public void setSourceEncoding(final String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
+    }
+
+    public void setSourceDirectory(final String sourceDirectory) {
+        this.sourceDirectory = new File(sourceDirectory);
+    }
+
+    public void setTargetDirectory(final String targetDirectory) {
+        this.targetDirectory = new File(targetDirectory);
+    }
+
+    public void setLanguageMode(final String languageMode) {
+        this.languageMode = LanguageMode.fromString(languageMode);
+    }
+
+    public void setCompilationLevel(final String compilationLevel) {
+        this.compilationLevel = CompilationLevel.valueOf(compilationLevel);
+    }
+
+    public void setSources(final List<String> sources) {
+        this.sources = ImmutableList.copyOf(sources);
+    }
+
+    public void setSources(final String[] sources) {
+        this.sources = ImmutableList.copyOf(sources);
+    }
 
     @Override
     public void execute() throws MojoExecutionException {
