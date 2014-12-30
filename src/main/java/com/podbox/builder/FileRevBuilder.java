@@ -46,12 +46,12 @@ public class FileRevBuilder extends AbstractBuilder {
                 final Map<String, String> dictionnary = new HashMap<>();
 
                 final Iterator<File> inputFiles = listFiles(new File(inputDirectory, namePrefix), new SuffixFileFilter(nameSuffix), CAN_READ).iterator();
-
                 while (inputFiles.hasNext()) {
                     final File inputFile = inputFiles.next();
 
                     final String outputFileName = filerev(inputFile, sourceCharset);
-                    final File outputFile = new File(new File(outputDirectory, namePrefix), outputFileName);
+                    final String outputPath = substringBefore(substringAfter(substringAfter(inputFile.getAbsolutePath(), inputDirectory.getAbsolutePath()), namePrefix), inputFile.getName());
+                    final File outputFile = new File(new File(new File(outputDirectory, namePrefix), outputPath), outputFileName);
 
                     createParentDirs(outputFile);
                     copy(inputFile, outputFile);

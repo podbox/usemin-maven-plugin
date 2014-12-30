@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.google.common.hash.Hashing.murmur3_32;
-import static com.google.common.io.Files.getFileExtension;
-import static com.google.common.io.Files.getNameWithoutExtension;
 import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
@@ -41,9 +39,9 @@ public final class FileRevCompiler {
         final String originalFileName = originalFile.getName();
 
         return Joiner.on('.').join(
-                getNameWithoutExtension(originalFileName),
+                substringBeforeLast(originalFileName, "."),
                 hash(originalFile, charset),
-                getFileExtension(originalFileName)
+                substringAfterLast(originalFileName, ".")
         );
     }
 
