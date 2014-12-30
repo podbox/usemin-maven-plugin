@@ -12,7 +12,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +23,6 @@ import static org.apache.commons.lang3.StringUtils.endsWith;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.PREPARE_PACKAGE;
 import static org.apache.maven.plugins.annotations.ResolutionScope.NONE;
-import static org.jsoup.Jsoup.parse;
 
 @Mojo(
         name = "usemin",
@@ -100,14 +98,7 @@ public class UseMinMojo extends AbstractMojo {
             final String path = substringAfter(parentSourceDirectory.getAbsolutePath(), sourceDirectory.getAbsolutePath());
 
             try {
-                String html;
-                if (isHtml) {
-                    final Document document = parse(sourceFile, sourceEncoding);
-                    html = document.normalise().outerHtml();
-                }
-                else {
-                    html = Files.toString(sourceFile, forName(sourceEncoding));
-                }
+                String html = Files.toString(sourceFile, forName(sourceEncoding));
 
                 html = cssBuilder.usemin(path, html);
                 html = jsBuilder.usemin(path, html);

@@ -115,7 +115,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 </build>
 ```
 
-## Gradle Task (yeah, it's ugly...)
+## Gradle Task _(yeah, it's ugly...)_
 ```groovy
 buildscript {
     repositories {
