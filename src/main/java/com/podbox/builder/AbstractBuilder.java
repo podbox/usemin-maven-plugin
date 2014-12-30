@@ -13,11 +13,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.google.common.io.Files.*;
+import static com.podbox.ansi.AnsiColor.*;
 import static com.podbox.compiler.FileRevCompiler.filerev;
 import static java.nio.charset.Charset.forName;
 import static java.util.regex.Matcher.quoteReplacement;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.quote;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.jsoup.Jsoup.parse;
@@ -54,7 +56,7 @@ public abstract class AbstractBuilder {
 
         while (matcher.find()) {
             final String outputResourceName = matcher.group(1);
-            logger.info("    " + outputResourceName);
+            logger.info("    {}{}{}", CYAN, outputResourceName, RESET);
 
             final boolean jspContextPath = startsWith(outputResourceName, JSP_CONTEXT_PATH);
 
@@ -62,21 +64,22 @@ public abstract class AbstractBuilder {
             final Optional<String> sourceMin = compile(path, resources);
 
             if (sourceMin.isPresent()) {
-
                 final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset);
 
                 final File outputFile = jspContextPath ?
                         new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH)) :
                         new File(new File(targetDirectory.getCanonicalFile(), path).getCanonicalFile(), outputResource);
 
-                logger.info("");
-                logger.info("  Writing " + outputFile.getCanonicalFile().getAbsolutePath());
-                createParentDirs(outputFile);
-                touch(outputFile.getCanonicalFile());
-                write(sourceMin.get(), outputFile.getCanonicalFile(), sourceCharset);
+                final File canonicalOutputFile = outputFile.getCanonicalFile();
+
+                logger.info(EMPTY);
+                logger.info("  {}Writing {}{}", GREEN, substringAfter(outputFile.getCanonicalPath(), targetDirectory.getCanonicalPath() + '/'), RESET);
+                createParentDirs(canonicalOutputFile);
+                touch(canonicalOutputFile);
+                write(sourceMin.get(), canonicalOutputFile, sourceCharset);
 
                 builds.put(outputResourceName, outputResource);
-                logger.info("");
+                logger.info(EMPTY);
             }
         }
 

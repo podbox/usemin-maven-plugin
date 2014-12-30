@@ -7,6 +7,9 @@ import org.jsoup.nodes.Element;
 import java.io.File;
 import java.io.IOException;
 
+import static com.podbox.ansi.AnsiColor.CYAN;
+import static com.podbox.ansi.AnsiColor.RESET;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.jsoup.Jsoup.parse;
 
 public class CdnBuilder extends AbstractBuilder {
@@ -22,19 +25,21 @@ public class CdnBuilder extends AbstractBuilder {
         boolean hasCdnData = false;
 
         for (final Element element : document.select("link[data-cdn]")) {
-            logger.info("  " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
-            element.attr("href", element.attr("data-cdn")).removeAttr("data-cdn");
+            final String cdn = element.attr("data-cdn");
+            logger.info("    {}{}{}  ⟶   {}{}{}", CYAN, element.attr("href"), RESET, CYAN, cdn, RESET);
+            element.attr("href", cdn).removeAttr("data-cdn");
             hasCdnData = true;
         }
 
         for (final Element element : document.select("script[data-cdn]")) {
-            logger.info("  " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
-            element.attr("src", element.attr("data-cdn")).removeAttr("data-cdn");
+            final String cdn = element.attr("data-cdn");
+            logger.info("    {}{}{}  ⟶   {}{}{}", CYAN, element.attr("src"), RESET, CYAN, cdn, RESET);
+            element.attr("src", cdn).removeAttr("data-cdn");
             hasCdnData = true;
         }
 
         if (hasCdnData) {
-            logger.info("");
+            logger.info(EMPTY);
             return document.outerHtml();
         }
         else {

@@ -19,6 +19,7 @@ import static com.google.common.io.Files.*;
 import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
 import static com.google.javascript.jscomp.CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT;
 import static java.nio.charset.Charset.forName;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.endsWith;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -84,7 +85,8 @@ public class UseMin {
         final CdnBuilder cdnBuilder = new CdnBuilder(sourceDirectory, targetDirectory, sourceEncoding);
 
         for (final String source : sources) {
-            logger.info("Processing " + source);
+            logger.info("Processing {}", source);
+            logger.info(EMPTY);
 
             final boolean isHtml = endsWith(source, ".html");
             final File sourceFile = new File(sourceDirectory, source);

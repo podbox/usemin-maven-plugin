@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import static com.google.javascript.jscomp.SourceFile.fromCode;
 import static com.google.javascript.jscomp.SourceFile.fromFile;
+import static com.podbox.ansi.AnsiColor.*;
 import static java.util.UUID.randomUUID;
 import static java.util.regex.Pattern.DOTALL;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -50,7 +51,7 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
             }
 
             if (isNotBlank(sourceFileName)) {
-                logger.info("     " + (scripts.hasNext() ? '├' : '└') + "─ " + sourceFileName);
+                logger.info("    {}─ {}{}{}", (scripts.hasNext() ? '├' : '└'), CYAN, sourceFileName, RESET);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
@@ -81,10 +82,10 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
     public void report(CheckLevel level, JSError error) {
         switch (level) {
             case ERROR:
-                logger.error(error.toString());
+                logger.error("{}{}{}", RED, error.toString(), RESET);
                 throw new RuntimeException(error.toString());
             case WARNING:
-                logger.warn(error.toString());
+                logger.warn("{}{}{}", YELLOW, error.toString(), RESET);
                 break;
         }
     }

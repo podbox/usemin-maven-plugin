@@ -13,8 +13,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.io.Files.copy;
 import static com.google.common.io.Files.createParentDirs;
+import static com.podbox.ansi.AnsiColor.CYAN;
+import static com.podbox.ansi.AnsiColor.RESET;
 import static com.podbox.compiler.FileRevCompiler.filerev;
 import static java.util.Arrays.asList;
 import static java.util.regex.Pattern.DOTALL;
@@ -48,17 +51,20 @@ public class FileRevBuilder extends AbstractBuilder {
                 final Iterator<File> inputFiles = listFiles(new File(inputDirectory, namePrefix), new SuffixFileFilter(nameSuffix), CAN_READ).iterator();
                 while (inputFiles.hasNext()) {
                     final File inputFile = inputFiles.next();
+                    final File canonicalInputFile = inputFile.getCanonicalFile();
 
                     final String outputFileName = filerev(inputFile, sourceCharset);
                     final String outputPath = substringBefore(substringAfter(substringAfter(inputFile.getAbsolutePath(), inputDirectory.getAbsolutePath()), namePrefix), inputFile.getName());
-                    final File outputFile = new File(new File(new File(outputDirectory, namePrefix), outputPath), outputFileName);
 
-                    createParentDirs(outputFile);
-                    copy(inputFile, outputFile);
+                    final File outputFile = new File(new File(new File(outputDirectory, namePrefix), outputPath), outputFileName);
+                    final File canonicalOutputFile = outputFile.getCanonicalFile();
+
+                    createParentDirs(canonicalOutputFile);
+                    copy(canonicalInputFile, canonicalOutputFile);
 
                     final String inputResourceName = substringBeforeLast(substringAfter(substringAfter(inputFile.getAbsolutePath(), inputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
                     final String outputResourceName = substringBeforeLast(substringAfter(substringAfter(outputFile.getAbsolutePath(), outputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
-                    logger.info("     " + (inputFiles.hasNext() ? '├' : '└') + "─ " + inputResourceName + "  ⟶  " + outputResourceName);
+                    logger.info("    {}─ {}{}{}  ⟶   {}{}{}", (inputFiles.hasNext() ? '├' : '└'), CYAN, inputResourceName, RESET, CYAN, outputResourceName, RESET);
 
                     dictionnary.put('"' + inputResourceName + '"', '"' + outputResourceName + '"');
                 }
@@ -72,7 +78,7 @@ public class FileRevBuilder extends AbstractBuilder {
             }
         }
 
-        return Optional.absent();
+        return absent();
     }
 
     @Override

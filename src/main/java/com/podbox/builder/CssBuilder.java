@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.podbox.ansi.AnsiColor.CYAN;
+import static com.podbox.ansi.AnsiColor.RESET;
 import static java.util.regex.Pattern.DOTALL;
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -43,7 +45,7 @@ public class CssBuilder extends AbstractBuilder {
             }
 
             if (isNotBlank(sourceFileName)) {
-                logger.info("     " + (stylesheets.hasNext() ? '├' : '└') + "─ " + sourceFileName);
+                logger.info("    {}─ {}{}{}", (stylesheets.hasNext() ? '├' : '└'), CYAN, sourceFileName, RESET);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
