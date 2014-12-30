@@ -123,6 +123,7 @@ buildscript {
         maven { url 'https://repository-podbox.forge.cloudbees.com/public' }
     }
     dependencies {
+        classpath "org.apache.maven:maven-plugin-api:3.2.3"
         classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
     }
 }

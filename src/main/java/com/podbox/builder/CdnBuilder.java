@@ -20,23 +20,27 @@ public class CdnBuilder extends AbstractBuilder {
     public String usemin(final String path, final String html) throws IOException {
         final Document document = parse(html, sourceEncoding);
 
+        boolean hasCdnData = false;
+
         for (final Element element : document.select("link[data-cdn]")) {
             log.info("  " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("href", element.attr("data-cdn")).removeAttr("data-cdn");
+            hasCdnData = true;
         }
 
         for (final Element element : document.select("script[data-cdn]")) {
             log.info("  " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("src", element.attr("data-cdn")).removeAttr("data-cdn");
+            hasCdnData = true;
         }
 
-        log.info("");
-        return document
-                .normalise()
-                .outputSettings(document.outputSettings()
-                                .indentAmount(2)
-                )
-                .outerHtml();
+        if (hasCdnData) {
+            log.info("");
+            return document.outerHtml();
+        }
+        else {
+            return html;
+        }
     }
 
     @Override
