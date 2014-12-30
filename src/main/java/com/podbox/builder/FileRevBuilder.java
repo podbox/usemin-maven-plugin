@@ -64,7 +64,7 @@ public class FileRevBuilder extends AbstractBuilder {
                 }
 
                 return Optional.of(Joiner.on(' ').join(asList(
-                        "(function(w){var _hash={",
+                        "'use strict';(function(w){var _hash={",
                         Joiner.on(',').withKeyValueSeparator(":").join(dictionnary),
                         "};w." + functionName + "=function(name){",
                         "return \"" + namePrefix + "\" + _hash[name] + \"" + nameSuffix + "\";}})(window)"

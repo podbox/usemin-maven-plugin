@@ -7,6 +7,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class UseMinMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        StaticLoggerBinder.getSingleton().setMavenLog(getLog());
         try {
             final UseMin useMin = new UseMin();
             useMin.setSourceEncoding(sourceEncoding);
