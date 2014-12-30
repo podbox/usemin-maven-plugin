@@ -127,6 +127,8 @@ buildscript {
     }
 }
 
+sourceSets { main { resources { exclude 'static/index.html' } } }
+
 task usemin(dependsOn: processResources) {
     def usemin = new com.podbox.mojo.UseMinMojo(
             sourceEncoding:   'UTF-8',

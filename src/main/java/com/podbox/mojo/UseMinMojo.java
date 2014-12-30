@@ -6,6 +6,7 @@ import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.podbox.builder.CdnBuilder;
 import com.podbox.builder.CssBuilder;
+import com.podbox.builder.FileRevBuilder;
 import com.podbox.builder.JsBuilder;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -85,6 +86,7 @@ public class UseMinMojo extends AbstractMojo {
 
         final CssBuilder cssBuilder = new CssBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
         final JsBuilder jsBuilder = new JsBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding, languageMode, compilationLevel);
+        final FileRevBuilder fileRevBuilder = new FileRevBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
         final CdnBuilder cdnBuilder = new CdnBuilder(getLog(), sourceDirectory, targetDirectory, sourceEncoding);
 
         for (final String source : sources) {
@@ -109,6 +111,7 @@ public class UseMinMojo extends AbstractMojo {
 
                 html = cssBuilder.usemin(path, html);
                 html = jsBuilder.usemin(path, html);
+                html = fileRevBuilder.usemin(path, html);
                 if (isHtml) {
                     html = cdnBuilder.usemin(path, html);
                 }

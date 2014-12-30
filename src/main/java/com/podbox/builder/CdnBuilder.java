@@ -21,12 +21,12 @@ public class CdnBuilder extends AbstractBuilder {
         final Document document = parse(html, sourceEncoding);
 
         for (final Element element : document.select("link[data-cdn]")) {
-            log.info("    " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
+            log.info("  " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("href", element.attr("data-cdn")).removeAttr("data-cdn");
         }
 
         for (final Element element : document.select("script[data-cdn]")) {
-            log.info("    " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
+            log.info("  " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("src", element.attr("data-cdn")).removeAttr("data-cdn");
         }
 

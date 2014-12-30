@@ -1,6 +1,5 @@
 package com.podbox.builder;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.Document;
@@ -13,14 +12,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.hash.Hashing.murmur3_32;
 import static com.google.common.io.Files.*;
+import static com.podbox.compiler.FileRevCompiler.filerev;
 import static java.nio.charset.Charset.forName;
 import static java.util.regex.Matcher.quoteReplacement;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.quote;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.startsWith;
+import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.jsoup.Jsoup.parse;
 
 public abstract class AbstractBuilder {
@@ -33,7 +32,7 @@ public abstract class AbstractBuilder {
 
     protected final File sourceDirectory;
 
-    private final File targetDirectory;
+    protected final File targetDirectory;
 
     protected final String sourceEncoding;
 
@@ -63,13 +62,8 @@ public abstract class AbstractBuilder {
             final Optional<String> sourceMin = compile(path, resources);
 
             if (sourceMin.isPresent()) {
-                final String hash = murmur3_32().hashString(sourceMin.get(), UTF_8).toString();
 
-                final String outputResource = Joiner.on('.').join(
-                        substringBeforeLast(outputResourceName, "."),
-                        hash,
-                        substringAfterLast(outputResourceName, ".")
-                );
+                final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset);
 
                 final File outputFile = jspContextPath ?
                         new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH)) :
