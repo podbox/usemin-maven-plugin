@@ -3,7 +3,6 @@ package com.podbox.builder;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -27,8 +26,8 @@ public class FileRevBuilder extends AbstractBuilder {
 
     static final Pattern SEARCH_PATTERN = Pattern.compile("<!--[\\s]*build:filerev[\\s]*(.*?)(?=[\\s]*-->)[\\s]*-->(.*?)(?=<!--[\\s]*endbuild[\\s]*-->)<!--[\\s]*endbuild[\\s]*-->", DOTALL);
 
-    public FileRevBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
-        super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
+    public FileRevBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class FileRevBuilder extends AbstractBuilder {
 
                     final String inputResourceName = substringBeforeLast(substringAfter(substringAfter(inputFile.getAbsolutePath(), inputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
                     final String outputResourceName = substringBeforeLast(substringAfter(substringAfter(outputFile.getAbsolutePath(), outputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
-                    log.info("     " + (inputFiles.hasNext() ? '├' : '└') + "─ " + inputResourceName + "  ⟶  " + outputResourceName);
+                    logger.info("     " + (inputFiles.hasNext() ? '├' : '└') + "─ " + inputResourceName + "  ⟶  " + outputResourceName);
 
                     dictionnary.put('"' + inputResourceName + '"', '"' + outputResourceName + '"');
                 }

@@ -1,7 +1,6 @@
 package com.podbox.builder;
 
 import com.google.common.base.Optional;
-import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -12,8 +11,8 @@ import static org.jsoup.Jsoup.parse;
 
 public class CdnBuilder extends AbstractBuilder {
 
-    public CdnBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
-        super(null, log, sourceDirectory, targetDirectory, sourceEncoding);
+    public CdnBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(null, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
@@ -23,19 +22,19 @@ public class CdnBuilder extends AbstractBuilder {
         boolean hasCdnData = false;
 
         for (final Element element : document.select("link[data-cdn]")) {
-            log.info("  " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
+            logger.info("  " + element.attr("href") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("href", element.attr("data-cdn")).removeAttr("data-cdn");
             hasCdnData = true;
         }
 
         for (final Element element : document.select("script[data-cdn]")) {
-            log.info("  " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
+            logger.info("  " + element.attr("src") + "  ⟶  " + element.attr("data-cdn"));
             element.attr("src", element.attr("data-cdn")).removeAttr("data-cdn");
             hasCdnData = true;
         }
 
         if (hasCdnData) {
-            log.info("");
+            logger.info("");
             return document.outerHtml();
         }
         else {

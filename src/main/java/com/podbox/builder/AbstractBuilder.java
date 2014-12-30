@@ -1,8 +1,8 @@
 package com.podbox.builder;
 
 import com.google.common.base.Optional;
-import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,14 +21,15 @@ import static java.util.regex.Pattern.quote;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.jsoup.Jsoup.parse;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public abstract class AbstractBuilder {
 
     protected static final String JSP_CONTEXT_PATH = "${pageContext.request.contextPath}/";
 
-    protected final Pattern searchPattern;
+    protected final Logger logger = getLogger(getClass());
 
-    protected final Log log;
+    protected final Pattern searchPattern;
 
     protected final File sourceDirectory;
 
@@ -38,9 +39,8 @@ public abstract class AbstractBuilder {
 
     protected final Charset sourceCharset;
 
-    protected AbstractBuilder(final Pattern searchPattern, final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+    protected AbstractBuilder(final Pattern searchPattern, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
         this.searchPattern = searchPattern;
-        this.log = log;
         this.sourceDirectory = sourceDirectory;
         this.targetDirectory = targetDirectory;
         this.sourceEncoding = sourceEncoding;
@@ -54,7 +54,7 @@ public abstract class AbstractBuilder {
 
         while (matcher.find()) {
             final String outputResourceName = matcher.group(1);
-            log.info("    " + outputResourceName);
+            logger.info("    " + outputResourceName);
 
             final boolean jspContextPath = startsWith(outputResourceName, JSP_CONTEXT_PATH);
 
@@ -69,14 +69,14 @@ public abstract class AbstractBuilder {
                         new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH)) :
                         new File(new File(targetDirectory.getCanonicalFile(), path).getCanonicalFile(), outputResource);
 
-                log.info("");
-                log.info("  Writing " + outputFile.getCanonicalFile().getAbsolutePath());
+                logger.info("");
+                logger.info("  Writing " + outputFile.getCanonicalFile().getAbsolutePath());
                 createParentDirs(outputFile);
                 touch(outputFile.getCanonicalFile());
                 write(sourceMin.get(), outputFile.getCanonicalFile(), sourceCharset);
 
                 builds.put(outputResourceName, outputResource);
-                log.info("");
+                logger.info("");
             }
         }
 

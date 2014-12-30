@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.podbox.compiler.ClosureCompiler;
-import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,8 +29,8 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
 
     final CompilationLevel compilationLevel;
 
-    public JsBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final LanguageMode languageMode, final CompilationLevel compilationLevel) {
-        super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
+    public JsBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final LanguageMode languageMode, final CompilationLevel compilationLevel) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
         this.languageMode = languageMode;
         this.compilationLevel = compilationLevel;
     }
@@ -51,7 +50,7 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
             }
 
             if (isNotBlank(sourceFileName)) {
-                log.info("     " + (scripts.hasNext() ? '├' : '└') + "─ " + sourceFileName);
+                logger.info("     " + (scripts.hasNext() ? '├' : '└') + "─ " + sourceFileName);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
@@ -82,10 +81,10 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
     public void report(CheckLevel level, JSError error) {
         switch (level) {
             case ERROR:
-                log.error(error.toString());
+                logger.error(error.toString());
                 throw new RuntimeException(error.toString());
             case WARNING:
-                log.warn(error.toString());
+                logger.warn(error.toString());
                 break;
         }
     }

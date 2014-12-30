@@ -1,9 +1,9 @@
 package com.podbox.compiler;
 
 import com.google.common.base.Optional;
-import org.apache.maven.plugin.logging.Log;
 import org.lesscss.LessCompiler;
 import org.lesscss.LessException;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.util.List;
 import static com.google.common.base.Optional.fromNullable;
 import static java.lang.System.setOut;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class LessCssCompiler {
 
@@ -21,7 +22,9 @@ public class LessCssCompiler {
 
     private static final PrintStream SYSTEM_OUT = System.out;
 
-    public static Optional<String> compile(final Log log, final List<File> sources) throws IOException {
+    private static final Logger LOGGER = getLogger(LessCssCompiler.class);
+
+    public static Optional<String> compile(final List<File> sources) throws IOException {
         setOut(LESS_OUT);
 
         try {
@@ -32,7 +35,6 @@ public class LessCssCompiler {
                 try {
                     sourceMin += lessCompiler.compile(sourceFile);
                 } catch (final LessException e) {
-                    log.error(e.getMessage());
                     throw new IOException(e.getMessage(), e);
                 }
             }
@@ -53,7 +55,7 @@ public class LessCssCompiler {
         @Override
         public void println(final String x) {
             if (!"done".equals(x)) {
-                super.println(x);
+                LOGGER.info(x);
             }
         }
 

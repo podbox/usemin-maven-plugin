@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.podbox.compiler.CssCompiler;
 import com.podbox.compiler.LessCssCompiler;
-import org.apache.maven.plugin.logging.Log;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -25,8 +24,8 @@ public class CssBuilder extends AbstractBuilder {
 
     static final String TEXT_LESS = "text/x-less";
 
-    public CssBuilder(final Log log, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
-        super(SEARCH_PATTERN, log, sourceDirectory, targetDirectory, sourceEncoding);
+    public CssBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
     }
 
     @Override
@@ -44,14 +43,14 @@ public class CssBuilder extends AbstractBuilder {
             }
 
             if (isNotBlank(sourceFileName)) {
-                log.info("     " + (stylesheets.hasNext() ? '├' : '└') + "─ " + sourceFileName);
+                logger.info("     " + (stylesheets.hasNext() ? '├' : '└') + "─ " + sourceFileName);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
                         new File(new File(sourceDirectory, path).getCanonicalFile(), sourceFileName);
 
                 if (TEXT_LESS.equals(stylesheet.attr("type"))) {
-                    sources.add(LessCssCompiler.compile(log, newArrayList(sourceFile)).get());
+                    sources.add(LessCssCompiler.compile(newArrayList(sourceFile)).get());
                 }
                 else {
                     sources.add(Files.toString(sourceFile, sourceCharset));

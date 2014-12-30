@@ -58,12 +58,12 @@ which replaces references from non-optimized scripts and stylesheets to their op
 
 ## Maven Config
 ```xml
-<repositories>
-    <repository>
-        <id>podbox-repository</id>
+<pluginRepositories>
+    <pluginRepository>
+        <id>podbox-public-repository</id>
         <url>https://repository-podbox.forge.cloudbees.com/public</url>
-    </repository>
-</repositories>
+    </pluginRepository>
+</pluginRepositories>
 
 <build>
     <plugins>
@@ -123,7 +123,6 @@ buildscript {
         maven { url 'https://repository-podbox.forge.cloudbees.com/public' }
     }
     dependencies {
-        classpath "org.apache.maven:maven-plugin-api:3.2.3"
         classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
     }
 }
@@ -131,10 +130,10 @@ buildscript {
 sourceSets { main { resources { exclude 'static/index.html' } } }
 
 task usemin(dependsOn: processResources) {
-    def usemin = new com.podbox.mojo.UseMinMojo(
+    def usemin = new com.podbox.UseMin(
             sourceEncoding:   'UTF-8',
-            sourceDirectory:  'src/main/resources/static',
-            targetDirectory:  'build/resources/main/static',
+            sourceDirectory:  file('src/main/resources/static'),
+            targetDirectory:  file('build/resources/main/static'),
             languageMode:     'ECMASCRIPT5_STRICT',
             compilationLevel: 'SIMPLE_OPTIMIZATIONS',
             sources:          [ 'index.html' ]
