@@ -35,7 +35,7 @@ public class UseMinMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.sourceEncoding}", readonly = true)
     private String sourceEncoding;
 
-    @Parameter(defaultValue = "src/main/webapp")
+    @Parameter(defaultValue = "${basedir}/src/main/webapp")
     private File sourceDirectory;
 
     @Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}")
