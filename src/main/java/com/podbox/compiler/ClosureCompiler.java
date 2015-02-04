@@ -20,7 +20,7 @@ import static com.google.javascript.jscomp.SourceFile.fromCode;
 import static java.lang.Thread.currentThread;
 import static java.util.Arrays.asList;
 
-public class ClosureCompiler {
+public final class ClosureCompiler {
 
     static final List<SourceFile> EXTERNS;
 
@@ -57,6 +57,9 @@ public class ClosureCompiler {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private ClosureCompiler() {
     }
 
     public static <T extends SourceFile> Optional<String> compile(final ErrorManager errorManager, final Collection<T> inputs, final LanguageMode languageMode, final CompilationLevel level) {

@@ -11,7 +11,10 @@ import java.util.List;
 
 import static com.google.common.base.Optional.fromNullable;
 
-public class CssCompiler {
+public final class CssCompiler {
+
+    private CssCompiler() {
+    }
 
     public static Optional<String> compile(final List<String> sources) throws IOException {
         final String source = Joiner.on('\n').join(sources);

@@ -12,17 +12,21 @@ import java.io.PrintStream;
 import java.util.List;
 
 import static com.google.common.base.Optional.fromNullable;
+import static java.lang.System.out;
 import static java.lang.System.setOut;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class LessCssCompiler {
+public final class LessCssCompiler {
 
-    private static final PrintStream LESS_OUT = new LessPrintStream(System.out);
+    private static final PrintStream LESS_OUT = new LessPrintStream(out);
 
-    private static final PrintStream SYSTEM_OUT = System.out;
+    private static final PrintStream SYSTEM_OUT = out;
 
     private static final Logger LOGGER = getLogger(LessCssCompiler.class);
+
+    private LessCssCompiler() {
+    }
 
     public static Optional<String> compile(final List<File> sources) throws IOException {
         setOut(LESS_OUT);
