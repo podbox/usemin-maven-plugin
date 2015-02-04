@@ -45,7 +45,7 @@ public class CssBuilder extends AbstractBuilder {
             }
 
             if (isNotBlank(sourceFileName)) {
-                logger.info("    {}─ {}{}{}", (stylesheets.hasNext() ? '├' : '└'), CYAN, sourceFileName, RESET);
+                logger.info("    {}─ {}{}{}", stylesheets.hasNext() ? '├' : '└', CYAN, sourceFileName, RESET);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :

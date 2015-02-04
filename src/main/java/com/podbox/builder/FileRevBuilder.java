@@ -64,7 +64,7 @@ public class FileRevBuilder extends AbstractBuilder {
 
                     final String inputResourceName = substringBeforeLast(substringAfter(substringAfter(inputFile.getAbsolutePath(), inputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
                     final String outputResourceName = substringBeforeLast(substringAfter(substringAfter(outputFile.getAbsolutePath(), outputDirectory.getAbsolutePath()), namePrefix), nameSuffix);
-                    logger.info("    {}─ {}{}{}  ⟶   {}{}{}", (inputFiles.hasNext() ? '├' : '└'), CYAN, inputResourceName, RESET, CYAN, outputResourceName, RESET);
+                    logger.info("    {}─ {}{}{}  ⟶   {}{}{}", inputFiles.hasNext() ? '├' : '└', CYAN, inputResourceName, RESET, CYAN, outputResourceName, RESET);
 
                     dictionnary.put('"' + inputResourceName + '"', '"' + outputResourceName + '"');
                 }

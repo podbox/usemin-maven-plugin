@@ -51,7 +51,7 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
             }
 
             if (isNotBlank(sourceFileName)) {
-                logger.info("    {}─ {}{}{}", (scripts.hasNext() ? '├' : '└'), CYAN, sourceFileName, RESET);
+                logger.info("    {}─ {}{}{}", scripts.hasNext() ? '├' : '└', CYAN, sourceFileName, RESET);
 
                 final File sourceFile = jspContextPath ?
                         new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
