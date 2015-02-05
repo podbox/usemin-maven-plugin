@@ -1,0 +1,5 @@
+<FindBugsFilter>
+    <Match>
+        <Class name="com.yahoo.platform.yui.compressor.CssCompressor"/>
+    </Match>
+</FindBugsFilter>
