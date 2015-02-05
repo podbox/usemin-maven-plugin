@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.podbox</groupId>
@@ -58,7 +59,7 @@
             <artifactId>jcabi-maven-slf4j</artifactId>
             <version>0.9</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.javascript</groupId>
             <artifactId>closure-compiler</artifactId>
@@ -209,12 +210,12 @@
 
     <distributionManagement>
         <repository>
-            <id>cloudbees-public-repository</id>
-            <url>dav:https://repository-podbox.forge.cloudbees.com/public</url>
+            <id>podbox-public</id>
+            <url>https://ci.podbox.com/nexus/content/repositories/public</url>
         </repository>
         <snapshotRepository>
-            <id>cloudbees-private-snapshot-repository</id>
-            <url>dav:https://repository-podbox.forge.cloudbees.com/snapshot</url>
+            <id>podbox-snapshots</id>
+            <url>https://ci.podbox.com/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
