@@ -117,13 +117,6 @@
     </dependencies>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav-jackrabbit</artifactId>
-                <version>2.8</version>
-            </extension>
-        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -211,11 +204,11 @@
     <distributionManagement>
         <repository>
             <id>podbox-public</id>
-            <url>https://ci.podbox.com/nexus/content/repositories/public</url>
+            <url>http://ci.podbox.com/nexus/content/repositories/public</url>
         </repository>
         <snapshotRepository>
             <id>podbox-snapshots</id>
-            <url>https://ci.podbox.com/nexus/content/repositories/snapshots</url>
+            <url>http://ci.podbox.com/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
