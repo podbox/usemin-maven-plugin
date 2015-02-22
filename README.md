@@ -61,7 +61,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 <pluginRepositories>
     <pluginRepository>
         <id>podbox-public-repository</id>
-        <url>https://repository-podbox.forge.cloudbees.com/public</url>
+        <url>http://ci.podbox.com/nexus/content/repositories/public</url>
     </pluginRepository>
 </pluginRepositories>
 
@@ -120,7 +120,7 @@ which replaces references from non-optimized scripts and stylesheets to their op
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'https://repository-podbox.forge.cloudbees.com/public' }
+        maven { url 'http://ci.podbox.com/nexus/content/repositories/public' }
     }
     dependencies {
         classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
