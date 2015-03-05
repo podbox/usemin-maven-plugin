@@ -65,7 +65,7 @@ public class CssBuilder extends AbstractBuilder {
 
     @Override
     protected String getReplacement(final String resourceName) {
-        return "<link rel=\"stylesheet\" href=\"" + resourceName + "\">";
+        return "<link rel=\"stylesheet\" href=\"" + resourceName + "\" />";
     }
 
 }
