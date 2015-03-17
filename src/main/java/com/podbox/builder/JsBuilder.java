@@ -44,19 +44,24 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
         while (scripts.hasNext()) {
             final Element script = scripts.next();
 
-            String sourceFileName = substringBeforeLast(script.attr("src"), "?");
-            final boolean jspContextPath = startsWith(sourceFileName, JSP_CONTEXT_PATH);
-            if (jspContextPath) {
-                sourceFileName = substringAfter(sourceFileName, JSP_CONTEXT_PATH);
+            final String sourceFileName = substringBeforeLast(script.attr("src"), "?");
+            final String thSourceFileName = substringBeforeLast(script.attr("th:src"), "?");
+
+            File sourceFile = null;
+
+            if (startsWith(sourceFileName, JSP_CONTEXT_PATH)) {
+                sourceFile = new File(sourceDirectory.getCanonicalFile(), substringAfter(sourceFileName, JSP_CONTEXT_PATH));
+            }
+            else if (isNotBlank(sourceFileName)) {
+                sourceFile = new File(new File(sourceDirectory, path).getCanonicalFile(), sourceFileName);
+            }
+            else if (isNotBlank(thSourceFileName)) {
+                final int pos = startsWith(thSourceFileName, "@{~") ? 3 : 2;
+                sourceFile = new File(sourceDirectory.getCanonicalFile(), substring(thSourceFileName, pos, length(thSourceFileName) - pos + 1));
             }
 
-            if (isNotBlank(sourceFileName)) {
-                logger.info("    {}─ {}{}{}", scripts.hasNext() ? '├' : '└', CYAN, sourceFileName, RESET);
-
-                final File sourceFile = jspContextPath ?
-                        new File(sourceDirectory.getCanonicalFile(), sourceFileName) :
-                        new File(new File(sourceDirectory.getCanonicalFile(), path).getCanonicalFile(), sourceFileName);
-
+            if (sourceFile != null) {
+                logger.info("    {}─ {}{}{}", scripts.hasNext() ? '├' : '└', CYAN, isNotBlank(sourceFileName) ? sourceFileName : thSourceFileName, RESET);
                 sources.add(fromFile(sourceFile, sourceCharset));
             }
             else {
@@ -75,7 +80,7 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
 
     @Override
     protected String getReplacement(final String resourceName) {
-        return "<script src=\"" + resourceName + "\"></script>";
+        return "<script " + (startsWith(resourceName, "@{") ? "th:" : "") + "src=\"" + resourceName + "\"></script>";
     }
 
     @Override

@@ -19,9 +19,7 @@ import static java.nio.charset.Charset.forName;
 import static java.util.regex.Matcher.quoteReplacement;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.quote;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.startsWith;
-import static org.apache.commons.lang3.StringUtils.substringAfter;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.jsoup.Jsoup.parse;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -59,6 +57,7 @@ public abstract class AbstractBuilder {
             logger.info("    {}{}{}", CYAN, outputResourceName, RESET);
 
             final boolean jspContextPath = startsWith(outputResourceName, JSP_CONTEXT_PATH);
+            final boolean thymeleafUrl = startsWith(outputResourceName, "@{") && endsWith(outputResourceName, "}");
 
             final Document resources = parse(matcher.group(2), sourceEncoding);
             final Optional<String> sourceMin = compile(path, resources);
@@ -66,9 +65,17 @@ public abstract class AbstractBuilder {
             if (sourceMin.isPresent()) {
                 final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset);
 
-                final File outputFile = jspContextPath ?
-                        new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH)) :
-                        new File(new File(targetDirectory.getCanonicalFile(), path).getCanonicalFile(), outputResource);
+                final File outputFile;
+                if (jspContextPath) {
+                    outputFile = new File(targetDirectory.getCanonicalFile(), substringAfter(outputResource, JSP_CONTEXT_PATH));
+                }
+                else if (thymeleafUrl) {
+                    final int pos = startsWith(outputResource, "@{~") ? 3 : 2;
+                    outputFile = new File(targetDirectory.getCanonicalFile(), substring(outputResource, pos, length(outputResource) - pos + 1));
+                }
+                else {
+                    outputFile = new File(new File(targetDirectory.getCanonicalFile(), path).getCanonicalFile(), outputResource);
+                }
 
                 final File canonicalOutputFile = outputFile.getCanonicalFile();
 
