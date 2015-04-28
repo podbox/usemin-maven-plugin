@@ -103,6 +103,12 @@ which replaces references from non-optimized scripts and stylesheets to their op
                         <!-- default: SIMPLE_OPTIMIZATIONS -->
                         <compilationLevel>ADVANCED_OPTIMIZATIONS</compilationLevel>
                         
+                        <!-- https://github.com/marceloverdijk/lesscss-java -->
+                        <!-- default: no options -->
+                        <lessOptions>
+                            <lessOption>--relative-urls</lessOption>
+                        </lessOptions>
+                        
                         <sources>
                             <source>index.html</source>
                             <source>mapping.html</source>

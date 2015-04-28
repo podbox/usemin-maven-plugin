@@ -26,8 +26,11 @@ public class CssBuilder extends AbstractBuilder {
 
     static final String TEXT_LESS = "text/x-less";
 
-    public CssBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+    private List<String> lessOptions;
+
+    public CssBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, List<String> lessOptions) {
         super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
+        this.lessOptions = lessOptions;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class CssBuilder extends AbstractBuilder {
                 logger.info("    {}─ {}{}{}", stylesheets.hasNext() ? '├' : '└', CYAN, isNotBlank(sourceFileName) ? sourceFileName : thSourceFileName, RESET);
 
                 if (TEXT_LESS.equals(stylesheet.attr("type"))) {
-                    sources.add(LessCssCompiler.compile(newArrayList(sourceFile)).get());
+                    sources.add(LessCssCompiler.compile(newArrayList(sourceFile), lessOptions).get());
                 }
                 else {
                     sources.add(Files.toString(sourceFile, sourceCharset));

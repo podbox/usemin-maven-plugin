@@ -28,7 +28,7 @@ public final class LessCssCompiler {
     private LessCssCompiler() {
     }
 
-    public static Optional<String> compile(final List<File> sources) throws IOException {
+    public static Optional<String> compile(final List<File> sources, final List<String> lessOptions) throws IOException {
         setOut(LESS_OUT);
 
         try {
@@ -37,6 +37,7 @@ public final class LessCssCompiler {
             String sourceMin = "";
             for (final File sourceFile : sources) {
                 try {
+                    lessCompiler.setOptions(lessOptions);
                     sourceMin += lessCompiler.compile(sourceFile);
                 } catch (final LessException e) {
                     throw new IOException(e.getMessage(), e);

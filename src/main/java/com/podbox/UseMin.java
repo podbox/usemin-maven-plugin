@@ -40,6 +40,8 @@ public class UseMin {
 
     private List<String> sources;
 
+    private List<String> lessOptions;
+
     public void setSourceEncoding(final String sourceEncoding) {
         this.sourceEncoding = sourceEncoding;
     }
@@ -76,16 +78,28 @@ public class UseMin {
         this.sources = ImmutableList.copyOf(sources);
     }
 
+    public void setLessOptions(List<String> lessOptions) {
+        this.lessOptions = ImmutableList.copyOf(lessOptions);
+    }
+
+    public List<String> getLessOptions() {
+        return lessOptions;
+    }
+
     public void execute() throws IOException {
         if (sources == null || sources.isEmpty()) return;
 
-        final CssBuilder cssBuilder = new CssBuilder(sourceDirectory, targetDirectory, sourceEncoding);
+        final CssBuilder cssBuilder = new CssBuilder(sourceDirectory, targetDirectory, sourceEncoding, getLessOptions());
         final JsBuilder jsBuilder = new JsBuilder(sourceDirectory, targetDirectory, sourceEncoding, languageMode, compilationLevel);
         final FileRevBuilder fileRevBuilder = new FileRevBuilder(sourceDirectory, targetDirectory, sourceEncoding);
         final CdnBuilder cdnBuilder = new CdnBuilder(sourceDirectory, targetDirectory, sourceEncoding);
 
         for (final String source : sources) {
             logger.info("Processing {}", source);
+            logger.info("    Using less options: ");
+            for (String lessOption : lessOptions) {
+                logger.info("        "+lessOption);
+            }
             logger.info(EMPTY);
 
             final boolean isHtml = endsWith(source, ".html");
@@ -109,5 +123,4 @@ public class UseMin {
             write(html, targetFile, forName(sourceEncoding));
         }
     }
-
 }
