@@ -19,9 +19,7 @@ import static com.google.common.io.Files.*;
 import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
 import static com.google.javascript.jscomp.CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT;
 import static java.nio.charset.Charset.forName;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.endsWith;
-import static org.apache.commons.lang3.StringUtils.substringAfter;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class UseMin {
@@ -98,7 +96,7 @@ public class UseMin {
             logger.info("Processing {}", source);
             logger.info("    Using less options: ");
             for (String lessOption : lessOptions) {
-                logger.info("        "+lessOption);
+                logger.info("        " + lessOption);
             }
             logger.info(EMPTY);
 

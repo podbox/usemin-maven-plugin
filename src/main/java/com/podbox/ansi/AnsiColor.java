@@ -40,7 +40,8 @@ public final class AnsiColor {
     private static boolean isAvailable() {
         try {
             return console() != null && !containsIgnoreCase(OS_NAME.value(), "win");
-        } catch (final Exception e) {
+        }
+        catch (final Exception e) {
             return false;
         }
     }

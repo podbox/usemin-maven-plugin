@@ -25,7 +25,8 @@ public final class CssCompiler {
         final StringWriter writer = new StringWriter();
         try {
             compressor.compress(writer, -1);
-        } finally {
+        }
+        finally {
             writer.close();
         }
         return fromNullable(writer.toString());

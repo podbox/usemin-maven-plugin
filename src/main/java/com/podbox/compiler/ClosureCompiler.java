@@ -46,7 +46,8 @@ public final class ClosureCompiler {
                 );
             }
 
-        } catch (final IOException e) {
+        }
+        catch (final IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -54,7 +55,8 @@ public final class ClosureCompiler {
             for (final String filename : EXTERNS_FILENAME) {
                 EXTERNS.add(fromCode(filename, IOUtils.toString(ClosureCompiler.class.getResource(filename))));
             }
-        } catch (final IOException e) {
+        }
+        catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }

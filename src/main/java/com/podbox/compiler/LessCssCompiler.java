@@ -39,14 +39,16 @@ public final class LessCssCompiler {
                 try {
                     lessCompiler.setOptions(lessOptions);
                     sourceMin += lessCompiler.compile(sourceFile);
-                } catch (final LessException e) {
+                }
+                catch (final LessException e) {
                     throw new IOException(e.getMessage(), e);
                 }
             }
 
             return fromNullable(trimToNull(sourceMin));
 
-        } finally {
+        }
+        finally {
             setOut(SYSTEM_OUT);
         }
     }
