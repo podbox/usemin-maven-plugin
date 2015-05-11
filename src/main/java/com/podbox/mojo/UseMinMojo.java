@@ -11,7 +11,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import static org.apache.maven.plugins.annotations.LifecyclePhase.PREPARE_PACKAGE;
@@ -41,10 +40,10 @@ public class UseMinMojo extends AbstractMojo {
     private CompilationLevel compilationLevel;
 
     @Parameter
-    private List<String> lessOptions;
+    private List<String> sources;
 
     @Parameter
-    private List<String> sources;
+    private List<String> lessOptions;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -57,7 +56,7 @@ public class UseMinMojo extends AbstractMojo {
             useMin.setLanguageMode(languageMode);
             useMin.setCompilationLevel(compilationLevel);
             useMin.setSources(sources);
-            useMin.setLessOptions(lessOptions == null ? Collections.<String>emptyList() : lessOptions);
+            useMin.setLessOptions(lessOptions);
             useMin.execute();
         }
         catch (final IOException e) {

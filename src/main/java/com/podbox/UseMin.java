@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Charsets.UTF_8;
@@ -39,6 +40,11 @@ public class UseMin {
     private List<String> sources;
 
     private List<String> lessOptions;
+
+    public UseMin() {
+        sources = Collections.emptyList();
+        lessOptions = Collections.emptyList();
+    }
 
     public void setSourceEncoding(final String sourceEncoding) {
         this.sourceEncoding = sourceEncoding;
@@ -69,15 +75,15 @@ public class UseMin {
     }
 
     public void setSources(final List<String> sources) {
-        this.sources = ImmutableList.copyOf(sources);
+        this.sources = sources != null ? ImmutableList.copyOf(sources) : Collections.<String>emptyList();
     }
 
     public void setSources(final String[] sources) {
-        this.sources = ImmutableList.copyOf(sources);
+        this.sources = sources != null ? ImmutableList.copyOf(sources) : Collections.<String>emptyList();
     }
 
     public void setLessOptions(List<String> lessOptions) {
-        this.lessOptions = ImmutableList.copyOf(lessOptions);
+        this.lessOptions = lessOptions != null ? ImmutableList.copyOf(lessOptions) : Collections.<String>emptyList();
     }
 
     public List<String> getLessOptions() {
@@ -94,9 +100,11 @@ public class UseMin {
 
         for (final String source : sources) {
             logger.info("Processing {}", source);
-            logger.info("    Using less options: ");
-            for (String lessOption : lessOptions) {
-                logger.info("        " + lessOption);
+            if (lessOptions != null && !lessOptions.isEmpty()) {
+                logger.info("    Using less options: ");
+                for (String lessOption : lessOptions) {
+                    logger.info("        " + lessOption);
+                }
             }
             logger.info(EMPTY);
 
