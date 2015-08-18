@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.podbox.compiler.CssCompiler;
 import com.podbox.compiler.LessCssCompiler;
+import com.podbox.parsers.ThymeleafUrlParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -53,8 +54,8 @@ public class CssBuilder extends AbstractBuilder {
                 sourceFile = new File(new File(sourceDirectory, path).getCanonicalFile(), sourceFileName);
             }
             else if (isNotBlank(thSourceFileName)) {
-                final int pos = startsWith(thSourceFileName, "@{~") ? 3 : 2;
-                sourceFile = new File(sourceDirectory.getCanonicalFile(), substring(thSourceFileName, pos, length(thSourceFileName) - pos + 1));
+                String extracted = ThymeleafUrlParser.extractUrl(thSourceFileName);
+                sourceFile = new File(sourceDirectory.getCanonicalFile(), extracted);
             }
 
             if (sourceFile != null) {

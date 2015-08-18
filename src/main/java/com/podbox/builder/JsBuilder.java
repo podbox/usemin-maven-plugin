@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.CompilerOptions.LanguageMode;
 import com.podbox.compiler.ClosureCompiler;
+import com.podbox.parsers.ThymeleafUrlParser;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -56,8 +57,8 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
                 sourceFile = new File(new File(sourceDirectory, path).getCanonicalFile(), sourceFileName);
             }
             else if (isNotBlank(thSourceFileName)) {
-                final int pos = startsWith(thSourceFileName, "@{~") ? 3 : 2;
-                sourceFile = new File(sourceDirectory.getCanonicalFile(), substring(thSourceFileName, pos, length(thSourceFileName) - pos + 1));
+                String extracted = ThymeleafUrlParser.extractUrl(thSourceFileName);
+                sourceFile = new File(sourceDirectory.getCanonicalFile(), extracted);
             }
 
             if (sourceFile != null) {
