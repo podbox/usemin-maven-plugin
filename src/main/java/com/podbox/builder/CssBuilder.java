@@ -29,8 +29,9 @@ public class CssBuilder extends AbstractBuilder {
 
     private List<String> lessOptions;
 
-    public CssBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, List<String> lessOptions) {
-        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
+
+    public CssBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, List<String> lessOptions, String fileRevOption) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
         this.lessOptions = lessOptions;
     }
 

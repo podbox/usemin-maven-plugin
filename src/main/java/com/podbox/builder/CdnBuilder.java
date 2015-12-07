@@ -14,8 +14,8 @@ import static org.jsoup.Jsoup.parse;
 
 public class CdnBuilder extends AbstractBuilder {
 
-    public CdnBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
-        super(null, sourceDirectory, targetDirectory, sourceEncoding);
+    public CdnBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, String fileRevOption) {
+        super(null, sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
     }
 
     @Override

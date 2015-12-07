@@ -45,6 +45,9 @@ public class UseMinMojo extends AbstractMojo {
     @Parameter
     private List<String> lessOptions;
 
+    @Parameter
+    private String fileRevOption;
+
     @Override
     public void execute() throws MojoExecutionException {
         StaticLoggerBinder.getSingleton().setMavenLog(getLog());
@@ -57,6 +60,7 @@ public class UseMinMojo extends AbstractMojo {
             useMin.setCompilationLevel(compilationLevel);
             useMin.setSources(sources);
             useMin.setLessOptions(lessOptions);
+            useMin.setFileRevOption(fileRevOption);
             useMin.execute();
         }
         catch (final IOException e) {

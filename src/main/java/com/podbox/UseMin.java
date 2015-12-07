@@ -41,6 +41,8 @@ public class UseMin {
 
     private List<String> lessOptions;
 
+    private String fileRevOption;
+
     public UseMin() {
         sources = Collections.emptyList();
         lessOptions = Collections.emptyList();
@@ -90,13 +92,21 @@ public class UseMin {
         return lessOptions;
     }
 
+    public String getFileRevOption() {
+        return fileRevOption;
+    }
+
+    public void setFileRevOption(String fileRevOption) {
+        this.fileRevOption = fileRevOption;
+    }
+
     public void execute() throws IOException {
         if (sources == null || sources.isEmpty()) return;
 
-        final CssBuilder cssBuilder = new CssBuilder(sourceDirectory, targetDirectory, sourceEncoding, getLessOptions());
-        final JsBuilder jsBuilder = new JsBuilder(sourceDirectory, targetDirectory, sourceEncoding, languageMode, compilationLevel);
-        final FileRevBuilder fileRevBuilder = new FileRevBuilder(sourceDirectory, targetDirectory, sourceEncoding);
-        final CdnBuilder cdnBuilder = new CdnBuilder(sourceDirectory, targetDirectory, sourceEncoding);
+        final CssBuilder cssBuilder = new CssBuilder(sourceDirectory, targetDirectory, sourceEncoding, getLessOptions(), fileRevOption);
+        final JsBuilder jsBuilder = new JsBuilder(sourceDirectory, targetDirectory, sourceEncoding, languageMode, compilationLevel, fileRevOption);
+        final FileRevBuilder fileRevBuilder = new FileRevBuilder(sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
+        final CdnBuilder cdnBuilder = new CdnBuilder(sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
 
         for (final String source : sources) {
             logger.info("Processing {}", source);
