@@ -2,6 +2,6 @@ package com.podbox.builder;
 
 
 public interface FileRevOption {
-    String NO_REVISION = "NO_REVISION";
+    String AS_PARAMETER = "AS_PARAMETER";
     String IN_FILENAME = "IN_FILENAME";
 }

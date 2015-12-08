@@ -47,7 +47,7 @@ public final class FileRevCompiler {
     }
 
     public static String filerev(final String originalFileName, final String input, final Charset charset, String fileRevOption) {
-        if(fileRevOption.equals(FileRevOption.NO_REVISION)) {
+        if(fileRevOption.equals(FileRevOption.AS_PARAMETER)) {
             return originalFileName;
         } else {
             return filerev(originalFileName, input, charset);

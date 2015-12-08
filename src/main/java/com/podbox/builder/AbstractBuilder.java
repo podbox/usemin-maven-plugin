@@ -1,6 +1,8 @@
 package com.podbox.builder;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.podbox.compiler.FileRevCompiler;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 
@@ -66,13 +68,7 @@ public abstract class AbstractBuilder {
             final Optional<String> sourceMin = compile(path, resources);
 
             if (sourceMin.isPresent()) {
-                String outputResource;
-
-                if(fileRevOptions == null){
-                    outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset, FileRevOption.IN_FILENAME);
-                } else {
-                    outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset, fileRevOptions);
-                }
+                final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset, fileRevOptions);
 
                 final File outputFile;
                 if (jspContextPath) {
@@ -93,8 +89,11 @@ public abstract class AbstractBuilder {
                 createParentDirs(canonicalOutputFile);
                 touch(canonicalOutputFile);
                 write(sourceMin.get(), canonicalOutputFile, sourceCharset);
-
-                builds.put(outputResourceName, outputResource);
+                if(fileRevOptions.equals(FileRevOption.AS_PARAMETER)) {
+                    builds.put(outputResourceName, Joiner.on("?v=").join(outputResource, FileRevCompiler.hash(sourceMin.get(), sourceCharset)));
+                } else {
+                    builds.put(outputResourceName, outputResource);
+                }
                 logger.info(EMPTY);
             }
         }

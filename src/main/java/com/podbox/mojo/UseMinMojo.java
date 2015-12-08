@@ -45,7 +45,7 @@ public class UseMinMojo extends AbstractMojo {
     @Parameter
     private List<String> lessOptions;
 
-    @Parameter
+    @Parameter(defaultValue = "IN_FILENAME")
     private String fileRevOption;
 
     @Override
