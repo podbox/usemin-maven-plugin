@@ -29,8 +29,8 @@ public class FileRevBuilder extends AbstractBuilder {
 
     static final Pattern SEARCH_PATTERN = Pattern.compile("<!--[\\s]*build:filerev[\\s]*(.*?)(?=[\\s]*-->)[\\s]*-->(.*?)(?=<!--[\\s]*endbuild[\\s]*-->)<!--[\\s]*endbuild[\\s]*-->", DOTALL);
 
-    public FileRevBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
-        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
+    public FileRevBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, String fileRevOption) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
     }
 
     @Override

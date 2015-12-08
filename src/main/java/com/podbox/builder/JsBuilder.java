@@ -31,8 +31,8 @@ public class JsBuilder extends AbstractBuilder implements ErrorManager {
 
     final CompilationLevel compilationLevel;
 
-    public JsBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final LanguageMode languageMode, final CompilationLevel compilationLevel) {
-        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding);
+    public JsBuilder(final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final LanguageMode languageMode, final CompilationLevel compilationLevel, String fileRevOption) {
+        super(SEARCH_PATTERN, sourceDirectory, targetDirectory, sourceEncoding, fileRevOption);
         this.languageMode = languageMode;
         this.compilationLevel = compilationLevel;
     }

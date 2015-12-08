@@ -3,6 +3,7 @@ package com.podbox.compiler;
 import com.google.common.base.Joiner;
 import com.google.common.hash.HashFunction;
 import com.google.common.io.Files;
+import com.podbox.builder.FileRevOption;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,14 @@ public final class FileRevCompiler {
                 hash(originalFile, charset),
                 substringAfterLast(originalFileName, ".")
         );
+    }
+
+    public static String filerev(final String originalFileName, final String input, final Charset charset, String fileRevOption) {
+        if(fileRevOption.equals(FileRevOption.AS_PARAMETER)) {
+            return originalFileName;
+        } else {
+            return filerev(originalFileName, input, charset);
+        }
     }
 
 }

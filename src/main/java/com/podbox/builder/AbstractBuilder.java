@@ -1,6 +1,8 @@
 package com.podbox.builder;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.podbox.compiler.FileRevCompiler;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 
@@ -39,12 +41,15 @@ public abstract class AbstractBuilder {
 
     protected final Charset sourceCharset;
 
-    protected AbstractBuilder(final Pattern searchPattern, final File sourceDirectory, final File targetDirectory, final String sourceEncoding) {
+    protected final String fileRevOptions;
+
+    protected AbstractBuilder(final Pattern searchPattern, final File sourceDirectory, final File targetDirectory, final String sourceEncoding, final String fileRevOption) {
         this.searchPattern = searchPattern;
         this.sourceDirectory = sourceDirectory;
         this.targetDirectory = targetDirectory;
         this.sourceEncoding = sourceEncoding;
         this.sourceCharset = forName(sourceEncoding);
+        this.fileRevOptions = fileRevOption;
     }
 
     public String usemin(final String path, final String html) throws IOException {
@@ -63,7 +68,7 @@ public abstract class AbstractBuilder {
             final Optional<String> sourceMin = compile(path, resources);
 
             if (sourceMin.isPresent()) {
-                final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset);
+                final String outputResource = filerev(outputResourceName, sourceMin.get(), sourceCharset, fileRevOptions);
 
                 final File outputFile;
                 if (jspContextPath) {
@@ -84,8 +89,11 @@ public abstract class AbstractBuilder {
                 createParentDirs(canonicalOutputFile);
                 touch(canonicalOutputFile);
                 write(sourceMin.get(), canonicalOutputFile, sourceCharset);
-
-                builds.put(outputResourceName, outputResource);
+                if(fileRevOptions.equals(FileRevOption.AS_PARAMETER)) {
+                    builds.put(outputResourceName, Joiner.on("?v=").join(outputResource, FileRevCompiler.hash(sourceMin.get(), sourceCharset)));
+                } else {
+                    builds.put(outputResourceName, outputResource);
+                }
                 logger.info(EMPTY);
             }
         }
