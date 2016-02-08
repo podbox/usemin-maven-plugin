@@ -1,4 +1,4 @@
-package com.podbox.mojo;
+package com.podbox;
 
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.CompilerOptions.LanguageMode;

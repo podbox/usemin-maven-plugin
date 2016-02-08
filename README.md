@@ -58,13 +58,6 @@ which replaces references from non-optimized scripts and stylesheets to their op
 
 ## Maven Config
 ```xml
-<pluginRepositories>
-    <pluginRepository>
-        <id>podbox-public-repository</id>
-        <url>http://ci.podbox.com/nexus/content/repositories/public</url>
-    </pluginRepository>
-</pluginRepositories>
-
 <build>
     <plugins>
         <plugin>
@@ -121,13 +114,9 @@ which replaces references from non-optimized scripts and stylesheets to their op
 </build>
 ```
 
-## Gradle Task _(yeah, it's ugly...)_
+## Gradle Task
 ```groovy
 buildscript {
-    repositories {
-        mavenCentral()
-        maven { url 'http://ci.podbox.com/nexus/content/repositories/public' }
-    }
     dependencies {
         classpath "com.podbox:usemin-maven-plugin:$useminPluginVersion"
     }
@@ -135,15 +124,13 @@ buildscript {
 
 sourceSets { main { resources { exclude 'static/index.html' } } }
 
-task usemin(dependsOn: processResources) {
-    def usemin = new com.podbox.UseMin(
-            sourceEncoding:   'UTF-8',
-            sourceDirectory:  file('src/main/resources/static'),
-            targetDirectory:  file('build/resources/main/static'),
-            languageMode:     'ECMASCRIPT5_STRICT',
-            compilationLevel: 'SIMPLE_OPTIMIZATIONS',
-            sources:          [ 'index.html' ]
-    )
-    usemin.execute()
+task usemin(dependsOn: processResources, type: com.podbox.UseMinTask) {
+    sourceEncoding = 'UTF-8'
+    sourceDirectory = file('src/main/resources/static')
+    targetDirectory = file('build/resources/main/static')
+    languageMode = 'ECMASCRIPT5_STRICT'
+    compilationLevel = 'SIMPLE_OPTIMIZATIONS'
+    sources = [ 'index.html' ]
 }
+task jar.dependsOn(usemin)
 ```
