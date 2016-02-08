@@ -24,6 +24,7 @@ public class ThymeleafUrlParser {
 
     /**
      * Extract url out of a thymeleaf URL like @{http://www.podbox.com}
+     *
      * @param thymeleafUrl
      * @return extracted URL
      * @throws com.podbox.parsers.ThymeleafUrlParser.InvalidThymeleafUrl if url is not a thymeleaf formatted one
@@ -40,7 +41,8 @@ public class ThymeleafUrlParser {
             if (extracted.isEmpty()) {
                 throw new InvalidThymeleafUrl("Impossible to resolve an url");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new InvalidThymeleafUrl(e);
         }
         return extracted;

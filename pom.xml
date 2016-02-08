@@ -65,11 +65,11 @@
             <version>v20151216</version>
         </dependency>
 
-        <!--dependency>
-            <groupId>com.yahoo.platform.yui</groupId>
-            <artifactId>yuicompressor</artifactId>
-            <version>2.4.8</version>
-        </dependency-->
+        <dependency>
+            <groupId>com.google.closure-stylesheets</groupId>
+            <artifactId>closure-stylesheets</artifactId>
+            <version>20140426</version>
+        </dependency>
 
         <dependency>
             <groupId>org.lesscss</groupId>
