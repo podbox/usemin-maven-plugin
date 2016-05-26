@@ -1,4 +1,6 @@
 # Usemin Maven Plugin
+[![Build Status](https://travis-ci.org/podbox/usemin-maven-plugin.svg?branch=master)](https://travis-ci.org/podbox/usemin-maven-plugin)
+
 The Usemin Maven plugin is a tool inspired by [grunt-usemin](https://github.com/yeoman/grunt-usemin),
 which replaces references from non-optimized scripts and stylesheets to their optimized version within a set of HTML and JSP files using :
 
